@@ -1,0 +1,9 @@
+module.exports = {
+    name: 'command name',
+    desc: 'description',
+    category: 'category',
+    options: [],
+    async execute(action, options, client) {
+        //code execution here
+    }
+}

@@ -1,0 +1,82 @@
+module.exports = {
+    name: 'saychaos',
+    desc: 'Sends a message in a specified channel, enciphered with the Chaocipher.',
+    category: 'Admin',
+    options: [
+        {
+            type:'CHANNEL',
+            name:'channel',
+            description:'Channel to send message in.',
+            required: true
+        },
+        {
+            type:'STRING',
+            name:'message',
+            description:'Message to encode and send.',
+            required:true
+        }
+    ],
+    async execute(action, options, client) {
+        if(!action.member.permissions.has('MANAGE_MESSAGES')) return;
+        let channel = options.get('channel').channel
+
+        let message = options.get('message').value
+        let messageArray = message.split('')
+        let finalMessage = ''
+
+        let pt = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+        let ct = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+
+        for(i in messageArray) {
+            let ptIndex = pt.indexOf(messageArray[i])
+            let ctIndex = ct.indexOf(messageArray[i])
+
+            // console.log(pt.indexOf(messageArray[i]))
+
+            if(pt.indexOf(messageArray[i]) == -1) {finalMessage += messageArray[i]} 
+            else {
+                finalMessage += ct[ptIndex]
+
+                // console.log('Letters:')
+                // console.log(messageArray[i])
+                // console.log(ct[ptIndex])
+
+                //shift pt to letter
+                let ptB = pt
+                ptB = ptB.slice(0,ptIndex)
+                pt = pt.concat(ptB)
+                pt = pt.slice(ptIndex)
+                // console.log('PT 1:')
+                // console.log(pt)
+
+                //shift ct to letter
+                let ctB = ct
+                ctB = ctB.slice(0,ptIndex)
+                ct = ct.concat(ctB)
+                ct = ct.slice(ptIndex)
+                // console.log('CT 1:')
+                // console.log(ct)
+
+                ct.splice(14,0,ct[1])
+                ct.splice(1,1)
+                // console.log('CT 2:')
+                // console.log(ct)
+
+                ptB = pt
+                ptB = ptB.slice(0,1)
+                pt = pt.concat(ptB)
+                pt = pt.slice(1)
+                // console.log('PT 2:')
+                // console.log(pt)
+
+                pt.splice(14,0,pt[2])
+                pt.splice(2,1)
+                // console.log('PT 3:')
+                // console.log(pt)
+            }
+        }
+
+        channel.send(finalMessage.toUpperCase())
+        action.reply('🆗 Sent!', {ephemeral: true})
+    }
+}

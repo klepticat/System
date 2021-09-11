@@ -1,0 +1,16 @@
+{
+  "name": "system-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "klepticat",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.0.0-dev.f7e420bf290f5404e8b99b8896c63e178f77bbfc",
+    "ffmpeg-static": "^4.3.0",
+    "fs": "0.0.1-security"
+  }
+}

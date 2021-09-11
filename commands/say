@@ -1,0 +1,19 @@
+module.exports = {
+    name: 'say',
+    desc: 'Sends a message in a specified channel.',
+    category: 'Admin',
+    minArgs: 2,
+    maxArgs: 256,
+    async execute(msg, cmd, args, client) {
+        if(!msg.member.hasPermission('MANAGE_MESSAGES')) return;
+        if(args[0].startsWith('<#') && args[0].endsWith('>')) {
+            let mention = args[0].slice(2, -1)
+            let channel = client.channels.cache.get(mention)
+
+            channel.send(args.slice(1).join(' '))
+            msg.channel.send('🆗 Sent!')
+        } else {
+            msg.channel.send('🆘 You did not specify a channel. Specify one by typing \"#channel_name\".')
+        }
+    }
+}

@@ -1,0 +1,43 @@
+const Discord = require("discord.js")
+
+module.exports = {
+    name: 'sendbutton',
+    desc: 'Sends a Button with text.',
+    category: 'fun',
+    options: [
+        {
+            type: 'CHANNEL',
+            name: 'channel',
+            description: 'Channel to send the button in.',
+            required: true
+        },
+        {
+            type: 'STRING',
+            name: 'msgtext',
+            description: 'Text to show above the button.',
+            required: true
+        },
+        {
+            type: 'STRING',
+            name: 'btntext',
+            description: 'Text to show on the button.',
+            required: true
+        }
+    ],
+    async execute(action, options, client) {
+        if(!action.member.permissions.has('MANAGE_MESSAGES')) return;
+        let channel = options.get('channel').channel
+
+        const row = new Discord.MessageActionRow()
+        const button = new Discord.MessageButton({
+            label: options.get('btntext').value,
+            style: 4,
+            customID: 0
+        })
+
+        row.addComponents(button)
+
+        action.reply('🆗 Button Sent.', {ephemeral: true})
+        channel.send(options.get('msgtext').value, {components: [row]})
+    }
+}
